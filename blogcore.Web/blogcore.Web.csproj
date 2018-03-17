@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\blogcore.BLL.Implementations\blogcore.BLL.Implementations.csproj" />
+    <ProjectReference Include="..\blogcore.BLL.Interfaces\blogcore.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\blogcore.DAL.Implementations\blogcore.DAL.Implementations.csproj" />
+    <ProjectReference Include="..\blogcore.DAL.Interfaces\blogcore.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\blogcore.Entities\blogcore.Entities.csproj" />
+    <ProjectReference Include="..\blogcore.Web.ViewModels\blogcore.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
