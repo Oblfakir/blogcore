@@ -18,12 +18,12 @@ namespace blogcore.BLL.Implementations
             return _commentDal.GetCommentById(id);
         }
 
-        public List<CommentEntity> GetCommentsByArticleId(int articleId)
+        public IEnumerable<CommentEntity> GetCommentsByArticleId(int articleId)
         {
             return _commentDal.GetCommentsByArticleId(articleId);
         }
 
-        public List<CommentEntity> GetCommentsByUserId(int userId)
+        public IEnumerable<CommentEntity> GetCommentsByUserId(int userId)
         {
             return _commentDal.GetCommentsByUserId(userId);
         }

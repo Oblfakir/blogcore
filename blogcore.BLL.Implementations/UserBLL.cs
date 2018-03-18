@@ -19,7 +19,7 @@ namespace blogcore.BLL.Implementations
             return _userDal.GetUserById(id);
         }
 
-        public List<UserEntity> GetAllUsers()
+        public IEnumerable<UserEntity> GetAllUsers()
         {
             return _userDal.GetAllUsers();
         }

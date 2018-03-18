@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using blogcore.BLL.Interfaces;
+using blogcore.DAL.Interfaces;
 using blogcore.Entities;
 using blogcore.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,15 @@ using Newtonsoft.Json.Linq;
 namespace blogcore.Web.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Articles")]
-    public class ArticlesController : Controller
+    [Route("api/Comments")]
+    public class CommentsController : Controller
     {
-        private readonly IArticleBLL _articleBll;
+        private readonly ICommentBLL _commentBll;
         private readonly IMapper _mapper;
 
-        public ArticlesController(IArticleBLL articleBll, IMapper mapper)
+        public CommentsController(ICommentBLL commentBll, IMapper mapper)
         {
-            _articleBll = articleBll;
+            _commentBll = commentBll;
             _mapper = mapper;
         }
 
@@ -26,37 +27,43 @@ namespace blogcore.Web.Controllers
         public IActionResult Get()
         {
             var userIdParam = HttpContext.Request.Query["userId"].ToList().FirstOrDefault();
+            var articleIdParam = HttpContext.Request.Query["articleId"].ToList().FirstOrDefault();
 
-            if (userIdParam == null)
+            if (userIdParam == null && articleIdParam == null)
             {
-                var articles = _articleBll.GetAllArticles();
-                var articleVms = articles.Select(article => _mapper.Map<ArticleViewModel>(article));
-                return Ok(articleVms);
+                return BadRequest(new {error = "userId or articleId must be specified"});
             }
 
             if (int.TryParse(userIdParam, NumberStyles.Any, CultureInfo.InvariantCulture, out int userId))
             {
-                var articles = _articleBll.GetArticlesByUserId(userId);
-                var articleVms = articles.Select(article => _mapper.Map<ArticleViewModel>(article));
-                return Ok(articleVms);
+                var comments = _commentBll.GetCommentsByUserId(userId);
+                var commentVms = comments.Select(comment => _mapper.Map<CommentViewModel>(comment));
+                return Ok(commentVms);
+            }
+
+            if (int.TryParse(articleIdParam, NumberStyles.Any, CultureInfo.InvariantCulture, out int articleId))
+            {
+                var comments = _commentBll.GetCommentsByArticleId(articleId);
+                var commentVms = comments.Select(comment => _mapper.Map<CommentViewModel>(comment));
+                return Ok(commentVms);
             }
 
             return BadRequest();
         }
 
-        [HttpGet("{id}", Name = "GetArticleById")]
+        [HttpGet("{id}", Name = "GetCommentById")]
         public IActionResult Get(int id)
         {
-            var article = _articleBll.GetArticleById(id);
+            var comment = _commentBll.GetCommentById(id);
 
-            if (article == null)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            var articleVm = _mapper.Map<ArticleViewModel>(article);
+            var commentVm = _mapper.Map<CommentViewModel>(comment);
 
-            return Ok(articleVm);
+            return Ok(commentVm);
         }
 
         [HttpPost]
@@ -69,10 +76,10 @@ namespace blogcore.Web.Controllers
 
             try
             {
-                var articleVm = value.ToObject<ArticleViewModel>();
-                var article = _mapper.Map<ArticleEntity>(articleVm);
+                var commentVm = value.ToObject<CommentViewModel>();
+                var comment = _mapper.Map<CommentEntity>(commentVm);
 
-                var id = _articleBll.AddArticle(article);
+                var id = _commentBll.AddComment(comment);
 
                 if (id == -1)
                 {
@@ -97,10 +104,10 @@ namespace blogcore.Web.Controllers
 
             try
             {
-                var articleVm = value.ToObject<ArticleViewModel>();
-                var article = _mapper.Map<ArticleEntity>(articleVm);
+                var commentVm = value.ToObject<CommentViewModel>();
+                var comment = _mapper.Map<CommentEntity>(commentVm);
 
-                var result = _articleBll.ChangeArticle(id, article);
+                var result = _commentBll.ChangeComment(id, comment);
 
                 if (id == -1)
                 {
@@ -118,7 +125,7 @@ namespace blogcore.Web.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = _articleBll.DeleteArticle(id);
+            var result = _commentBll.DeleteComment(id);
             return Ok(new { result });
         }
     }

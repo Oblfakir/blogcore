@@ -29,6 +29,7 @@ namespace blogcore.IoC
             var mapperConfiguration = CreateConfiguration();
             services.AddSingleton(mapperConfiguration);
             services.AddScoped<IMapper>(context => new Mapper(mapperConfiguration, type => context.GetType()));
+
             return services;
         }
 
@@ -37,6 +38,8 @@ namespace blogcore.IoC
             return new MapperConfiguration(config =>
             {
                 config.AddProfile<ArticleProfile>();
+                config.AddProfile<UserProfile>();
+                config.AddProfile<CommentProfile>();
             });
         }
     }
