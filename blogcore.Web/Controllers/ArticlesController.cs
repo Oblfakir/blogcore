@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using blogcore.BLL.Interfaces;
 using blogcore.Entities;
 using blogcore.Web.ViewModels;
@@ -16,10 +17,12 @@ namespace blogcore.Web.Controllers
     public class ArticlesController : Controller
     {
         private readonly IArticleBLL _articleBll;
+        private readonly IMapper _mapper;
 
-        public ArticlesController(IArticleBLL articleBll)
+        public ArticlesController(IArticleBLL articleBll, IMapper mapper)
         {
             _articleBll = articleBll;
+            _mapper = mapper;
         }
         
         [HttpGet]
@@ -35,10 +38,10 @@ namespace blogcore.Web.Controllers
         }
         
         [HttpPost]
-        public void Post(JObject value)
+        public void Post([FromBody] JObject value)
         {
-            var user = value.ToObject<ArticleViewModel>();
-            var a = 123;
+            var userVm = value.ToObject<ArticleViewModel>();
+            var user = _mapper.Map<ArticleEntity>(userVm);
         }
         
         [HttpPut("{id}")]

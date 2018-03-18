@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="6.10.6" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\blogcore.DAL.Interfaces\blogcore.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\blogcore.Entities\blogcore.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

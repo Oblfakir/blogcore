@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\blogcore.DAL.Interfaces\blogcore.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\blogcore.Entities\blogcore.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

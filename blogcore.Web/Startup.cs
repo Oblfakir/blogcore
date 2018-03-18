@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using blogcore.BLL.Implementations;
-using blogcore.BLL.Interfaces;
-using blogcore.DAL.Implementations;
-using blogcore.DAL.Interfaces;
-using blogcore.Entities;
+﻿using blogcore.Entities;
+using blogcore.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace blogcore.Web
 {
@@ -28,8 +19,8 @@ namespace blogcore.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IArticleDAL, ArticleDAL>();
-            services.AddScoped<IArticleBLL, ArticleBLL>();
+            services.AddInternalServices();
+            services.AddAutomapperProfiles();
 
             services.AddCors();
             services.AddMvc();

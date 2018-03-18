@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\blogcore.BLL.Implementations\blogcore.BLL.Implementations.csproj" />
+    <ProjectReference Include="..\blogcore.BLL.Interfaces\blogcore.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\blogcore.DAL.Implementations\blogcore.DAL.Implementations.csproj" />
+    <ProjectReference Include="..\blogcore.DAL.Interfaces\blogcore.DAL.Interfaces.csproj" />
+    <ProjectReference Include="..\blogcore.Entities\blogcore.Entities.csproj" />
+    <ProjectReference Include="..\blogcore.Web.ViewModels\blogcore.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

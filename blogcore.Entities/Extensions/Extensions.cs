@@ -1,0 +1,17 @@
+﻿using System;
+using MySql.Data.MySqlClient;
+
+namespace blogcore.Entities.Extensions
+{
+    public static class Extensions
+    {
+        public static bool HasColumn(this MySqlDataReader reader, string columnName)
+        {
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                if (reader.GetName(i).Equals(columnName, StringComparison.InvariantCultureIgnoreCase)) return true;
+            }
+            return false;
+        }
+    }
+}
