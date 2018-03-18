@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using blogcore.DAL.Interfaces;
@@ -67,7 +66,7 @@ namespace blogcore.DAL.Implementations
                     CommandText = "GetArticlesByUserId"
                 };
 
-                command.Parameters.AddWithValue("@articleId", userId);
+                command.Parameters.AddWithValue("@articleUserId", userId);
 
                 connection.Open();
                 var reader = command.ExecuteReader();
@@ -97,7 +96,7 @@ namespace blogcore.DAL.Implementations
 
                 if (reader.Read())
                 {
-                    return (int) reader["id"];
+                    return int.Parse(reader["id"].ToString());
                 }
 
                 return -1;
@@ -106,12 +105,39 @@ namespace blogcore.DAL.Implementations
 
         public bool ChangeArticle(int id, ArticleEntity article)
         {
-            throw new NotImplementedException();
+            using (var connection = new MySqlConnection(AppConfig.ConnectionString))
+            {
+                var command = new MySqlCommand
+                {
+                    Connection = connection,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "ChangeArticle"
+                };
+
+                command.Parameters.AddWithValue("@articleId", id);
+                article.SetCommandParameters(command);
+
+                connection.Open();
+                return command.ExecuteNonQuery() > 0;
+            }
         }
 
         public bool DeleteArticle(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = new MySqlConnection(AppConfig.ConnectionString))
+            {
+                var command = new MySqlCommand
+                {
+                    Connection = connection,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "DeleteArticle"
+                };
+
+                command.Parameters.AddWithValue("@articleId", id);
+
+                connection.Open();
+                return command.ExecuteNonQuery() > 0;
+            }
         }
     }
 }

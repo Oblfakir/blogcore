@@ -20,9 +20,9 @@ namespace blogcore.Entities
 
         public void SetCommandParameters(MySqlCommand command)
         {
-            command.Parameters.AddWithValue("@Text", Text);
-            command.Parameters.AddWithValue("@UserId", UserId);
-            command.Parameters.AddWithValue("@ImagePath", ImagePath);
+            command.Parameters.AddWithValue("@articleText", Text);
+            command.Parameters.AddWithValue("@articleUserId", UserId);
+            command.Parameters.AddWithValue("@articleImagePath", ImagePath);
         }
 
         public int Id { get; set; }
