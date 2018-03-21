@@ -33,6 +33,8 @@ namespace blogcore.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

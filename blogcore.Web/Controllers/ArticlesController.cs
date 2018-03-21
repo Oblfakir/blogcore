@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using blogcore.BLL.Interfaces;
+using blogcore.DAL.Interfaces;
 using blogcore.Entities;
 using blogcore.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,16 @@ namespace blogcore.Web.Controllers
     [Route("api/Articles")]
     public class ArticlesController : Controller
     {
+        private readonly ICommentBLL _commentBll;
+        private readonly IUserBLL _userBll;
         private readonly IArticleBLL _articleBll;
         private readonly IMapper _mapper;
 
-        public ArticlesController(IArticleBLL articleBll, IMapper mapper)
+        public ArticlesController(IArticleBLL articleBll, IMapper mapper, IUserBLL userBll, ICommentBLL commentBll)
         {
             _articleBll = articleBll;
+            _commentBll = commentBll;
+            _userBll = userBll;
             _mapper = mapper;
         }
 
@@ -30,14 +35,14 @@ namespace blogcore.Web.Controllers
             if (userIdParam == null)
             {
                 var articles = _articleBll.GetAllArticles();
-                var articleVms = articles.Select(article => _mapper.Map<ArticleViewModel>(article));
+                var articleVms = articles.Select(MapToArticleViewModel);
                 return Ok(articleVms);
             }
 
             if (int.TryParse(userIdParam, NumberStyles.Any, CultureInfo.InvariantCulture, out int userId))
             {
                 var articles = _articleBll.GetArticlesByUserId(userId);
-                var articleVms = articles.Select(article => _mapper.Map<ArticleViewModel>(article));
+                var articleVms = articles.Select(MapToArticleViewModel);
                 return Ok(articleVms);
             }
 
@@ -54,7 +59,7 @@ namespace blogcore.Web.Controllers
                 return NotFound();
             }
 
-            var articleVm = _mapper.Map<ArticleViewModel>(article);
+            var articleVm = MapToArticleViewModel(article);
 
             return Ok(articleVm);
         }
@@ -120,6 +125,15 @@ namespace blogcore.Web.Controllers
         {
             var result = _articleBll.DeleteArticle(id);
             return Ok(new { result });
+        }
+
+        private ArticleViewModel MapToArticleViewModel(ArticleEntity article)
+        {
+            var articleVm = _mapper.Map<ArticleViewModel>(article);
+            articleVm.User = _mapper.Map<UserViewModel>(_userBll.GetUserById(article.UserId));
+            articleVm.Comments = _commentBll.GetCommentsByArticleId(article.Id)
+                .Select(comment => _mapper.Map<CommentViewModel>(comment));
+            return articleVm;
         }
     }
 }
